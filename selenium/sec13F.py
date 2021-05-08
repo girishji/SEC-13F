@@ -7,22 +7,25 @@ from selenium import webdriver, common
 from pathlib import Path
 from bs4 import BeautifulSoup
 
+
 def main(year, quarter, n):
     """Scrape 13F-HR reports from SEC website
 
-    :year: TODO
-    :quarter: TODO
-    :n: TODO
-    :returns: TODO
+    :year: year of filing
+    :quarter: quarter of the year of filing
+    :n: maximum count of links to follow
+    :returns: csv of CIK number of firm, name of firm, stock id, stock name,
+                quantity held, value in USD, type of stock
 
     """
 
     url_base = r"https://www.sec.gov/Archives"
+    filing_index_file = f'index_{year}_{quarter}.txt'
 
-    def get_index():
-        fname = f'index_{year}_{quarter}.txt'
-        if not Path(fname).is_file():
-            # download index file (it is huge)
+    def filing_index():
+        """Download index file only once (it can be huge)"""
+        if not Path(filing_index_file).is_file():
+            # setup the headless browser to download file without prompt
             fp = webdriver.FirefoxProfile()
             fp.set_preference("browser.download.folderList",2)
             fp.set_preference("browser.download.manager.showWhenStarting",False)
@@ -33,8 +36,8 @@ def main(year, quarter, n):
             options.headless = True
             browser = webdriver.Firefox(firefox_profile=fp, options=options)
             url = f'{url_base}/edgar/full-index/{year}/{quarter}/form.idx'
-            # Browser does not get load successful event after downloading
-            #   file. Set a timeout and loop until successful.
+            # Browser can hang if it does not recieve load-successful event
+            #   after downloading file. Set a timeout and loop until successful.
             browser.set_page_load_timeout(5)
             max_attempts = 5
             for attempts in range(max_attempts):
@@ -45,17 +48,14 @@ def main(year, quarter, n):
                     if Path('form.idx').is_file():
                         break
             browser.quit() 
-            if attempts == (max_attempts - 1):
-                raise Exception('Failed to save index file')
-
             if Path('form.idx').is_file():
-                Path('form.idx').replace(Path(fname))
+                Path('form.idx').replace(Path(filing_index_file))
+            else:
+                raise Exception('Failed to save index file')
         
-        if not Path(fname).is_file():
-            raise Exception('Failed to save index file')
-
-        # read index file and return a generator
-        with open(fname, "rb") as f:
+    def get_links():
+        """Read index file and return a generator to links"""
+        with open(filing_index_file, "rb") as f:
             for line in f.read().decode('utf-8').split('\n'):
                 if '13F-HR' in line:
                     words = line.split()
@@ -64,11 +64,14 @@ def main(year, quarter, n):
                     name = ' '.join(words[1:len(words)-3])
                     yield (cik, name, url)
 
+
+    # Follow the links and print results
+    filing_index()
     print('cik,name,cusip,issuer,value,quantity,type')
     options = webdriver.firefox.options.Options()
     options.headless = True
     browser = webdriver.Firefox(options = options)
-    for cik, name, url in get_index():
+    for cik, name, url in get_links():
         if n is not None:
             if n > 0:
                 n -= 1
@@ -76,8 +79,9 @@ def main(year, quarter, n):
                 break
         url = f'{url_base}/{url}'
         browser.get(url)
-        # our link points to a text file. firefox puts the text inside <pre> so 
-        #   we have a proper html document
+        # Our link points to a text file. Selenium cannot parse mangled text
+        #   as xml. However, Firefox puts the text inside <pre> so 
+        #   we have a proper html document. Isolate xml text.
         content = browser.find_element_by_tag_name('pre').text
         # parse extracted text as xml
         soup = BeautifulSoup(content, 'lxml')
@@ -90,6 +94,7 @@ def main(year, quarter, n):
                     it.shrsorprnamt.sshprnamt.string,
                     it.shrsorprnamt.sshprnamttype.string, sep=',')
     browser.quit()
+
 
 if __name__ == "__main__":
     year = 2021
