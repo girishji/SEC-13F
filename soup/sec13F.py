@@ -48,15 +48,18 @@ def main(year, quarter, n, *args):
 
 
     # write csv formatted output to stdout
+    filing_index()
     print('cik,name,cusip,issuer,value,quantity,type')
     for cik, name, url in get_links():
-        if n is not None:
-            if n > 0:
-                n -= 1
-            else:
-                break
-        if args and int(cik) not in args:
-            continue
+        if args:
+            if int(cik) not in args:
+                continue
+        else:
+            if n is not None:
+                if n > 0:
+                    n -= 1
+                else:
+                    break
         url = f'{url_base}/{url}'
         content = requests.get(url, headers=headers).content
         soup = BeautifulSoup(content, 'lxml')

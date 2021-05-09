@@ -72,11 +72,15 @@ def main(year, quarter, n, *args):
     options.headless = True
     browser = webdriver.Firefox(options = options)
     for cik, name, url in get_links():
-        if n is not None:
-            if n > 0:
-                n -= 1
-            else:
-                break
+        if args:
+            if int(cik) not in args:
+                continue
+        else:
+            if n is not None:
+                if n > 0:
+                    n -= 1
+                else:
+                    break
         if args and int(cik) not in args:
             continue
         url = f'{url_base}/{url}'

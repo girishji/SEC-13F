@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<!-- Keep this file sync'ed with vignette -->
+<!-- Usage: Rscript -e 'library(rmarkdown); rmarkdown::render("README.Rmd", NULL)' -->
 
 # Scraper for SEC Form 13F-HR
 
@@ -69,10 +69,9 @@ output as the one based on *BeautifulSoup*.**
 
 #### Scrapy
 
-    # Usage: scrapy crawl sec13Fspider -a year=<year> -a quarter=<1-4> \
-    #          -a n=<integer>  -o file.csv -t csv
-    #        (place the spider file, sec13F_spider.py, inside a scrapy project)
-    #
+    #> Usage: scrapy crawl sec13Fspider -a year=<year> -a quarter=<1-4> \
+    #>          -a n=<integer>  -o file.csv -t csv
+    #>        (place the spider file, sec13F_spider.py, inside a scrapy project)
 
 #### Selenium
 
@@ -102,3 +101,54 @@ python selenium/sec13F.py -h
 ```
 
 ## Example
+
+Berkshire Hathaway’s CIK is 1067983. We can download their holdings as
+of 1st quarter 2021 into a local file.
+
+``` zsh
+if [ ! -f "brk_2021_1.csv" ]; then
+  python soup/sec13F.py --year 2021 --quarter 1 1067983 > brk_2021_1.csv
+fi
+```
+
+We can find out the top holdings by value (happens to be Apple).
+
+``` python
+import pandas as pd
+brk2021 = pd.read_csv('brk_2021_1.csv')
+gr2021 = brk2021.groupby(['issuer', 'cusip']).agg({'value':'sum', 'quantity':'sum'})
+print(gr2021.sort_values('value', ascending=False).head())
+#>                                           value    quantity
+#> issuer                     cusip                           
+#> APPLE INC                  037833100  117714016   887135554
+#> BANK AMER CORP             060505104   30616150  1010100606
+#> COCA COLA CO               191216100   21935999   400000000
+#> AMERICAN EXPRESS CO        025816109   18331249   151610700
+#> VERIZON COMMUNICATIONS INC 92343V104   12090703   205064263
+```
+
+Similarly, top holdings as of the 4th quarter of 2020 are as follows.
+
+``` zsh
+if [ ! -f "brk_2020_4.csv" ]; then
+  python soup/sec13F.py --year 2020 --quarter 4 1067983 > brk_2020_4.csv
+fi
+```
+
+``` python
+import pandas as pd
+brk2020 = pd.read_csv('brk_2020_4.csv')
+gr2020 = brk2020.groupby(['issuer', 'cusip']).agg({'value':'sum', 'quantity':'sum'})
+print(gr2020.sort_values('value', ascending=False).head())
+#>                                    value    quantity
+#> issuer              cusip                           
+#> APPLE INC           037833100  109358868   944295554
+#> BANK AMER CORP      060505104   24333323  1010100606
+#> COCA COLA CO        191216100   19748000   400000000
+#> AMERICAN EXPRESS CO 025816109   15198971   151610700
+#> KRAFT HEINZ CO      500754106    9752763   325634818
+```
+
+It is apparent that they have sold 5.716^{7} shares (6%) of Apple and
+1.2057056^{8} shares (37%) of Verizon during the 1st quarter of 2021,
+when the market was hitting all-time highs. Learn from smart money!

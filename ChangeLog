@@ -1,16 +1,29 @@
 Author: Girish Palya <girishji@gmail.com>
-Date:   Sun, 09 May 2021 07:19:21 +0200
+Date:   Sun, 09 May 2021 14:24:14 +0200
 
-Add README file, and filter CIKs
+Improved readme file, and bug fixes
 
-Add a README file. Add option to scrape 13F of specific investment 
-  firms only (based on CIK). Include a .gitignore.
 
-A  .gitignore
-A  README.Rmd
-A  README.md
+M  .gitignore
+M  README.Rmd
+M  README.md
 M  selenium/sec13F.py
 M  soup/sec13F.py
+
+commit 9e4b5d9ba54d00511aee6ddd988682c95c384631
+Author: Girish Palya <girishji@gmail.com>
+Date:   Sun May 9 07:19:21 2021 +0200
+
+    Add README file, and filter CIKs
+    
+    Add a README file. Add option to scrape 13F of specific investment
+      firms only (based on CIK). Include a .gitignore.
+    
+    A  .gitignore
+    A  README.Rmd
+    A  README.md
+    M  selenium/sec13F.py
+    M  soup/sec13F.py
 
 commit 51fe89ba4225f57f22e360b278ac52b8f3f5a4cf
 Author: Girish Palya <girishji@gmail.com>
