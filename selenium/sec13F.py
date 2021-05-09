@@ -35,14 +35,15 @@ def main(year, quarter, n, *args):
             options = webdriver.firefox.options.Options()
             options.headless = True
             browser = webdriver.Firefox(firefox_profile=fp, options=options)
-            url = f'{url_base}/edgar/full-index/{year}/{quarter}/form.idx'
+            url = f'{url_base}/edgar/full-index/{year}/QTR{quarter}/form.idx'
             # Browser can hang if it does not recieve load-successful event
             #   after downloading file. Set a timeout and loop until successful.
-            browser.set_page_load_timeout(5)
+            browser.set_page_load_timeout(9)
             max_attempts = 5
             for attempts in range(max_attempts):
                 try:
                     browser.get(url)
+                    print("here")
                     break
                 except common.exceptions.TimeoutException:
                     if Path('form.idx').is_file():

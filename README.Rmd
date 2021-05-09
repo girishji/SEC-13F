@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
     python = '/Users/gp/opt/miniconda3/bin/python'
   ),
   collapse = TRUE,
+  comment = "#>",
   fig.path = "README-"
 )
 

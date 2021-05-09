@@ -1,11 +1,21 @@
 Author: Girish Palya <girishji@gmail.com>
-Date:   Sun, 09 May 2021 14:41:11 +0200
+Date:   Sun, 09 May 2021 15:02:33 +0200
 
-Improve readme
+Fixed url, improved readme
 
 
 M  README.Rmd
 M  README.md
+M  selenium/sec13F.py
+
+commit 57de7e5dacb97c9e9942a9da36f1242c6b82df22
+Author: Girish Palya <girishji@gmail.com>
+Date:   Sun May 9 14:41:11 2021 +0200
+
+    Improve readme
+    
+    M  README.Rmd
+    M  README.md
 
 commit c4858e027b756be5804c003b7a362eb73e456ceb
 Author: Girish Palya <girishji@gmail.com>
