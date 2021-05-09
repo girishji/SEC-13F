@@ -1,11 +1,19 @@
 Author: Girish Palya <girishji@gmail.com>
-Date:   Sun, 09 May 2021 15:07:50 +0200
+Date:   Sun, 09 May 2021 15:39:43 +0200
 
-Improved readme
+Add a pdf of readme file
 
 
-M  README.Rmd
-M  README.md
+A  description.pdf
+
+commit 8778510d15b1a7bb1780d0cfcbca37b5097fdb90
+Author: Girish Palya <girishji@gmail.com>
+Date:   Sun May 9 15:07:50 2021 +0200
+
+    Improved readme
+    
+    M  README.Rmd
+    M  README.md
 
 commit 32ff593f319cb09c4180ce450a3d64d8e4f66374
 Author: Girish Palya <girishji@gmail.com>
