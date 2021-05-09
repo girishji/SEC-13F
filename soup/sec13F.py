@@ -8,7 +8,7 @@ import urllib
 import requests
 import argparse
 
-def main(year, qtr, n, *args):
+def main(year, quarter, n, *args):
     """Scrape 13F-HR reports from SEC website
 
     :year: year of filing
@@ -24,12 +24,12 @@ def main(year, qtr, n, *args):
     headers = {'user-agent': 'soup_girish/0.0.1'}
 
     # index file contains links to 13F filings by investment firms
-    index_file = f'index_{year}_QTR{qtr}.txt'
+    index_file = f'index_{year}_QTR{quarter}.txt'
 
     def filing_index():
         """Download file containing index of 13-HR's filed during a quarter"""
         if not Path(index_file).is_file():
-            url = f'{url_base}/edgar/full-index/{year}/QTR{qtr}/form.idx'
+            url = f'{url_base}/edgar/full-index/{year}/QTR{quarter}/form.idx'
             content = requests.get(url, headers=headers).content
             # cache data in a file (this can be a huge file)
             with open(index_file, "wb") as f:

@@ -6,17 +6,17 @@
 from selenium import webdriver, common
 from pathlib import Path
 from bs4 import BeautifulSoup
+import argparse
 
-
-def main(year, quarter, n):
+def main(year, quarter, n, *args):
     """Scrape 13F-HR reports from SEC website
 
     :year: year of filing
     :quarter: quarter of the year of filing
     :n: maximum count of links to follow
+    :args: 0 or more CIK numbers of investment firms
     :returns: csv of CIK number of firm, name of firm, stock id, stock name,
-                quantity held, value in USD, type of stock
-
+                quantity held, value in USD, and type of stock
     """
 
     url_base = r"https://www.sec.gov/Archives"
@@ -77,6 +77,8 @@ def main(year, quarter, n):
                 n -= 1
             else:
                 break
+        if args and int(cik) not in args:
+            continue
         url = f'{url_base}/{url}'
         browser.get(url)
         # Our link points to a text file. Selenium cannot parse mangled text
@@ -96,8 +98,25 @@ def main(year, quarter, n):
     browser.quit()
 
 
+def get_parser():
+    """Parser to parse command line args"""
+    parser = argparse.ArgumentParser(
+            description="Scrape Form 13F-HR from SEC website and report"
+            + " current holdings of investment firms",
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter
+            )
+    parser.add_argument("--year", "-y", type=int, default=2021,
+            help="year when report was filed")
+    parser.add_argument("--quarter", "-q", type=int, default=1,
+            choices=[1, 2, 3, 4],
+            help="quarter (1-4) of year when report was filed")
+    parser.add_argument("--count", "-c", type=int, default=2,
+            help="maximum number of reports to parse")
+    parser.add_argument('ciks', metavar='CIK', type=int, nargs='*',
+            help='central index key(s) (CIK) to filter, if specified')
+    return parser
+
 if __name__ == "__main__":
-    year = 2021
-    quarter = 'QTR1'
-    n = 2
-    main(year, quarter, n)
+    parser = get_parser()
+    args = parser.parse_args()
+    main(args.year, args.quarter, args.count, *args.ciks)
