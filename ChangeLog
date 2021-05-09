@@ -1,12 +1,21 @@
 Author: Girish Palya <girishji@gmail.com>
-Date:   Sun, 09 May 2021 14:39:29 +0200
+Date:   Sun, 09 May 2021 14:41:11 +0200
 
-Improve readme file
+Improve readme
 
 
-M  .gitignore
 M  README.Rmd
 M  README.md
+
+commit c4858e027b756be5804c003b7a362eb73e456ceb
+Author: Girish Palya <girishji@gmail.com>
+Date:   Sun May 9 14:39:29 2021 +0200
+
+    Improve readme file
+    
+    M  .gitignore
+    M  README.Rmd
+    M  README.md
 
 commit 3c338006726f088efffc8b990822ecd7fb098ac2
 Author: Girish Palya <girishji@gmail.com>
