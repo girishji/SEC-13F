@@ -1,14 +1,24 @@
 Author: Girish Palya <girishji@gmail.com>
-Date:   Sun, 09 May 2021 14:24:14 +0200
+Date:   Sun, 09 May 2021 14:39:29 +0200
 
-Improved readme file, and bug fixes
+Improve readme file
 
 
 M  .gitignore
 M  README.Rmd
 M  README.md
-M  selenium/sec13F.py
-M  soup/sec13F.py
+
+commit 3c338006726f088efffc8b990822ecd7fb098ac2
+Author: Girish Palya <girishji@gmail.com>
+Date:   Sun May 9 14:24:15 2021 +0200
+
+    Improved readme file, and bug fixes
+    
+    M  .gitignore
+    M  README.Rmd
+    M  README.md
+    M  selenium/sec13F.py
+    M  soup/sec13F.py
 
 commit 9e4b5d9ba54d00511aee6ddd988682c95c384631
 Author: Girish Palya <girishji@gmail.com>

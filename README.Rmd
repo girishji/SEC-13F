@@ -25,27 +25,26 @@ knitr::opts_chunk$set(
 Securities and Exchange Commission (SEC) describes form 13F-HR as “Quarterly
 report filed by institutional managers, Holdings”. SEC requires professional
 investment managers (who manage over 100MM USD) to disclose their holdings
-every quarter by filing Form 13F-HR.
+every quarter by filing form 13F-HR.
 
-Scraping Form 13F-HR allows us to track holdings of an investment firm, and
-sheds some light on the trading pattern if we compare the holdings to previous
-quarters. Form 13F-HR does not track derivative exposures though. There are a
-few portals that aggregate 13F-HR data, but the SEC website is fairly easy to
-scrape since SEC publications are scraper-friendly. SEC publishers [daily
-reports](https://www.sec.gov/Archives/edgar/daily-index/) as well as [quarterly
-aggregates](https://www.sec.gov/Archives/edgar/full-index/).
+Scraping form 13F-HR allows us to find out the holdings of an investment firm,
+and track the trading pattern if we compare the holdings to previous quarters.
+Form 13F-HR does not track derivative exposures though. There are a few portals
+that aggregate 13F-HR data, but SEC website is fairly easy to scrape. SEC
+publishers [daily reports](https://www.sec.gov/Archives/edgar/daily-index/) as
+well as [quarterly aggregates](https://www.sec.gov/Archives/edgar/full-index/).
  
 The scrapers in this folder scrape using quarterly index. It is trivial to
 adapt the scrapers to scrape using daily index files. Scraping is a two-step
 process: First, index file is scraped to build a list of links to follow. Index
-file contains a list of filings. Each entry lists the type of form filed, CIK
-(central index key) number of the filing firm, name of the firm, and a relative
-URL to the filed report. Following these links lead to text files containing
-13F-HR forms (with embedded XML content containing holdings). Each holding
-entry has name of stock, number of stocks held, and their USD value, among
-other details. Index file for quarterly aggregates can be big (over 50MB). This
-file is downloaded into a local copy to reduce burden on SEC servers and to
-make incremental scraping faster.
+file contains a list of filings. Each entry contains the type of form filed,
+CIK (central index key) number of the filing firm, name of the firm, and a
+relative URL to the filed report. URLs lead to text files containing 13F-HR
+forms (with embedded XML content). Each holding entry has name of stock, number
+of stocks held, their USD value, and few other details. Index file for
+quarterly aggregates can be big (over 50MB). This file is downloaded into a
+local copy to reduce burden on SEC servers and to make incremental scraping
+faster.
 
 
 ## Usage
@@ -116,7 +115,7 @@ gr2020 = brk2020.groupby(['issuer', 'cusip']).agg({'value':'sum', 'quantity':'su
 print(gr2020.sort_values('value', ascending=False).head())
 ```
 
-It is apparent that they have sold `r 944295554-887135554` shares (6%) of Apple
-and `r 325634818-205064263` shares (37%) of Verizon during the 1st quarter of
-2021, when the market was hitting all-time highs. Learn from smart money!
+It is apparent that they have sold 57160000 shares (6%) of Apple and 120570555
+shares (37%) of Verizon during the 1st quarter of 2021, when the market was
+hitting all-time highs!
 
