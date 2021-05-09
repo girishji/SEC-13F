@@ -147,6 +147,6 @@ print(gr2020.sort_values('value', ascending=False).head())
 #> KRAFT HEINZ CO      500754106    9752763   325634818
 ```
 
-It is apparent that they have sold 57160000 shares (6%) of Apple and
-120570555 shares (37%) of Verizon during the 1st quarter of 2021, when
-the market was hitting all-time highs!
+It is apparent that they have sold 57160000 shares (6%) of Apple (AAPL)
+during the 1st quarter of 2021, when the market was hitting all-time
+highs!
